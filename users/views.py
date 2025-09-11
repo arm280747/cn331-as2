@@ -1,5 +1,4 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -17,9 +16,16 @@ def login_views(request):
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(username=username, password=password)
+
         if user is not None:
             login(request, user)
-            return redirect("home")
+
+            if user.is_superuser:
+                # admin:index เป็น url ที่ Django กำหนดไว้ให้เป็นหน้า admin page
+                return redirect(reverse("admin:index"))
+            else:
+                return render(request, "users/index.html")
+
         else:
             return render(
                 request, "users/login.html", {"message": "Invalid credentials."}
