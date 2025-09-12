@@ -6,9 +6,9 @@ from django.contrib.auth.models import User
 
 def index(request):
     if not request.user.is_authenticated:
-        return redirect("login")
+        return redirect("Login")
 
-    return render(request, "users/index.html")
+    return render(request, "room/home.html")
 
 
 def login_views(request):
@@ -24,7 +24,7 @@ def login_views(request):
                 # admin:index เป็น url ที่ Django กำหนดไว้ให้เป็นหน้า admin page
                 return redirect(reverse("admin:index"))
             else:
-                return render(request, "users/index.html")
+                return render(request, "room/home.html")
 
         else:
             return render(

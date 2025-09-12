@@ -5,18 +5,16 @@
 
 {% if message %}
     <h2>{{ message }}, Please login again.</h2>
-{% endif %}
-
-{% if registry %}
+{% elif registry %}
     <h2>{{ registry }}, Please login.</h2>
-{% endif %}
-
-{% if not registry and not message%}
+{% elif not registry and not message%}
     <h2>Please login.</h2>
 {% endif %}
 
+<!--action เป็น url ปลายทางที่ form จะถูกส่งไปเมื่อกด submit-->
+<!--ส่วน method post จะส่งข้อมูลจาก client (พวก web browser) ไป server-->
 <form action="{% url 'Login' %}" method="post">
-    {% csrf_token %}
+    {% csrf_token %} <!--อันนี้คือ token ความปลอดภัยไว้ป้องการ CSRF (การโจมตีโดยการส่ง request ปลอม)-->
     <input type="text" name="username" placeholder="Username">
     <input type="password" name="password" placeholder="Password">
     <input type="submit" value="Login">
