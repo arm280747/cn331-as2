@@ -1,0 +1,17 @@
+{% extends 'users/layout.html' %}
+{% block body %}
+
+{% if message %}
+    <h1>{{ message }}.</h1>
+{% endif %}
+
+<h1>Reservation room</h1>
+<ul>
+    {% for room in booking %}
+    <li>Room {{ room.room_code }}: Name {{ room.room_name }} Capacity {{ room.room_capacity }}</li>
+    {% empty %}
+    <li>No Room</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

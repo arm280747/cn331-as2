@@ -1,0 +1,21 @@
+{% extends 'users/layout.html' %}
+{% block body %}
+
+{% if message %}
+    <h1>{{ message }}.</h1>
+{% else %}
+    <h1>Welcome, {{ request.user.first_name }}</h1>
+{% endif %}
+
+<ul>
+    <li>Username: {{ request.user.username }}</li>
+    <li>Email: {{ request.user.email }}</li>
+</ul>
+
+<a href="{% url 'Logout' %}">Log Out</a><br>
+
+<a href="{% url 'available' %}">See all available room</a><br>
+
+<a href="{% url 'mybooking' %}">See your booking</a>
+
+{% endblock %}
