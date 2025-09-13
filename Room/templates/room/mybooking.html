@@ -24,7 +24,8 @@
             <div>
               <strong>Room {{ room.room_code }}</strong><br>
               Booker Name: {{ room.username }}<br>
-              Capacity: {{ room.pk }}
+              Capacity: {{ room.pk }}<br>
+              Booking Time: {{room.date_booking}}
             </div>
             <a href="{% url 'cancel' %}?id={{ room.id }}" class="btn btn-outline-danger btn-sm">Cancel</a>
           </li>
