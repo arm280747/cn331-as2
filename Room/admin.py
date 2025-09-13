@@ -3,5 +3,4 @@ from .models import Room, State, Guest
 
 # Register your models here.
 admin.site.register(Room)
-admin.site.register(State)
 admin.site.register(Guest)

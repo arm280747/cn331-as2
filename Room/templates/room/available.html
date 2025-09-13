@@ -1,12 +1,34 @@
 {% extends 'users/layout.html' %}
 {% block body %}
-<h1>Room</h1>
-<ul>
-    {% for room in allroom %}
-    <!--room มาจาก name ที่ตั้งไว้ใน urls.py-->
-    <li><a href="{% url 'room' room.pk %}">Room {{ room.code }}: Name {{ room.name }}  Hours available {{ room.available_hours}} State {{ room.room_state }}</a></li>
-    {% empty %}
-    <li>No Room</li>
-    {% endfor %}
-</ul>
+
+<div class="container mt-5" style="max-width: 700px;">
+
+  <!-- กล่องหัวข้อ -->
+  <div class="alert alert-info text-center">
+    <h2 class="mb-0">Room List</h2>
+  </div>
+
+  <!-- รายการห้อง -->
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <ul class="list-group list-group-flush">
+        {% for room in allroom %}
+          <li class="list-group-item">
+            <a href="{% url 'selectroom'  %}?id={{room.pk}}">
+
+              <strong>Room {{ room.room_code }}</strong>: {{ room.room_name }}<br>
+              Hours available: {{room.available_hours}} |
+              State: {{ room.room_state }}
+            
+            </a>
+          </li>
+        {% empty %}
+          <li class="list-group-item text-muted text-center">No Room</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+</div>
+
 {% endblock %}

@@ -18,6 +18,8 @@ class Migration(migrations.Migration):
                 ('room_code', models.IntegerField(primary_key=True, serialize=False)),
                 ('room_name', models.CharField(max_length=200)),
                 ('room_capacity', models.IntegerField()),
+                ('available_hours', models.IntegerField(default=24)),
+                ('is_available', models.BooleanField(default=True)),
             ],
         ),
         migrations.CreateModel(

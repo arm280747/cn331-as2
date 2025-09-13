@@ -24,7 +24,8 @@ def login_views(request):
                 # admin:index เป็น url ที่ Django กำหนดไว้ให้เป็นหน้า admin page
                 return redirect(reverse("admin:index"))
             else:
-                return render(request, "room/home.html")
+                return redirect("home")
+                #return render(request, "room/home.html")
 
         else:
             return render(
@@ -43,6 +44,8 @@ def register_views(request):
     if request.method == "POST":
         username = request.POST["Username"]
         password = request.POST["Password"]
+        first_name = request.POST["first_name"]
+        email = request.POST["email"]
         password_again = request.POST["Password again"]
 
         if password != password_again:
@@ -58,7 +61,7 @@ def register_views(request):
                 "users/register.html",
                 {"message": "This Username already registry, Please try again."},
             )
-        User.objects.create_user(username=username, password=password)
+        User.objects.create_user(username=username, password=password, first_name=first_name, email=email)
         return render(
             request,
             "users/login.html",

@@ -1,0 +1,32 @@
+{% extends 'users/layout.html' %}
+{% block body %}
+
+<div class="container mt-5" style="max-width: 700px;">
+
+  <!-- หัวข้อห้อง -->
+  <div class="alert alert-secondary text-center">
+    <h2 class="mb-0">Room Detail</h2>
+  </div>
+
+  <!-- รายละเอียดห้อง -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h4 class="card-title">Room {{ room.room_code }} - {{ room.room_name }}</h4>
+      <p class="card-text">
+        <strong>Capacity:</strong> {{ room.room_capacity }}<br>
+        <strong>Available Hours:</strong> {{ room.available_hours }}
+      </p>
+
+      <!-- ปุ่ม Booking -->
+      <form action="{% url 'booking' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="room_code" value="{{ room.room_code }}" />
+        <button type="submit" class="btn btn-success">Book This Room</button>
+        <a href="{% url 'available' %}" class="btn btn-outline-secondary ms-2">Back to Room List</a>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

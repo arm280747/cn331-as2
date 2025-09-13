@@ -1,21 +1,47 @@
 {% extends 'users/layout.html' %}
 {% block body %}
 
-{% if message %}
-    <h1>{{ message }}.</h1>
-{% else %}
-    <h1>Welcome, {{ request.user.first_name }}</h1>
-{% endif %}
+<div class="container mt-5" style="max-width: 700px;">
 
-<ul>
-    <li>Username: {{ request.user.username }}</li>
-    <li>Email: {{ request.user.email }}</li>
-</ul>
+  <!-- กล่องแสดงข้อความหรือ Welcome -->
+  {% if message %}
+    <div class="alert alert-warning text-center">
+      <h4>{{ message }}.</h4>
+    </div>
+  {% else %}
+    <div class="alert alert-success text-center">
+      <h4>Welcome, {{ request.user.first_name }}</h4>
+    </div>
+  {% endif %}
 
-<a href="{% url 'Logout' %}">Log Out</a><br>
+  <!-- กล่องข้อมูลผู้ใช้ -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">User Information</h5>
+      <ul class="list-group list-group-flush">
 
-<a href="{% url 'available' %}">See all available room</a><br>
+        <li class="list-group-item"><strong>Username:</strong> {{ request.user.username }}</li>
+        <li class="list-group-item"><strong>Email:</strong> {{ request.user.email }}</li>
+      
+      </ul>
+    </div>
+  </div>
 
-<a href="{% url 'mybooking' %}">See your booking</a>
+  <!-- กล่องเมนูนำทาง -->
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">Navigation</h5>
+      <div class="list-group">
+
+        <a href="{% url 'available' %}" class="list-group-item list-group-item-action">📋 See all available rooms</a>
+        <a href="{% url 'mybooking' %}" class="list-group-item list-group-item-action">📅 See your bookings</a>
+        <a href="{% url 'addroom' %}" class="list-group-item list-group-item-action">➕ Add a new room</a>
+        <a href="{% url 'Logout' %}" class="list-group-item list-group-item-action text-danger">🚪 Log Out</a>
+      
+      </div>
+    </div>
+  </div>
+
+</div>
 
 {% endblock %}

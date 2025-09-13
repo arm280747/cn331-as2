@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 
-from .models import State, Room, Guest
+from .models import State, Room, Guest, Booking
 
 
 # Create your views here.
@@ -10,15 +10,17 @@ def home(request):
 
 
 def allroom(request):
-    all_room = State.objects.all()
+    #all_room = State.objects.all()
+    all_room=Room.objects.all()
     return render(request, "room/available.html", {"allroom": all_room})
 
 
-def room(request, room_code):
+def selectroom(request):
+    room_code=request.GET.get('id')
     room = get_object_or_404(Room, pk=room_code)
     return render(
         request,
-        "room/room.html",
+        "room/selectroom.html",
         {
             "room": room,
             "guest": room.guests.all(),
@@ -27,9 +29,19 @@ def room(request, room_code):
         },
     )
 
+def selectroom1(request):
+    room_code=request.GET.get('id')
+    room = get_object_or_404(Room, pk=room_code)
+    context={
+        "room_code":room_code,
+        "room_name":room.room_name,
+        "available_hours":room.available_hours,
+        "room_capacity":room.room_capacity
+    }
+    return render(request, "room/selectroom.html",context)
 
 # ใช้จองห้อง
-def booking(request, room_code):
+def booking_test(request, room_code):
     if request.method == "POST":
         room = get_object_or_404(Room, pk=room_code)
         room_state = get_object_or_404(State, pk=room_code)
@@ -68,8 +80,60 @@ def booking(request, room_code):
         request, reverse("home"), {"message": "some error occur please try again"}
     )
 
+def addroom(request):
+    room_list=Room.objects.all()
+    return render(request, "room/addroom.html", {"roomlist": room_list})
+def saveroom(request):
+    if request.method == "POST":
+        room_code = request.POST["room_code"]
+        room_name = request.POST["room_name"]
+        room_capacity = request.POST["room_capacity"]
+        available_hours = request.POST["available_hours"]
+        is_available = True
+        room = Room.objects.create(
+            room_code=int(room_code),
+            room_name=room_name,
+            room_capacity=room_capacity,
+            available_hours=available_hours,
+            is_available=True
+        )
+        room.save()
+        return redirect("addroom")
+        #print(room.room_code)
+
+    return render(request, "room/addroom.html")
 
 # ใช้ดูห้องที่จองไว้
 def mybooking(request):
-    booking = Room.objects.filter(room_name=request.user)
+    booking = Booking.objects.filter(username = request.user.username)
     return render(request, "room/mybooking.html", {"booking": booking})
+
+def booking(request):
+    if request.method == "POST":
+        room_code = request.POST["room_code"]
+        
+        check_booking = Booking.objects.filter(username = request.user.username,room_code=room_code)
+        if not check_booking.exists():
+            booking = Booking.objects.create(
+                room_code=int(room_code),
+                username=request.user.username
+            )   
+            #booking.save()
+            room = get_object_or_404(Room, pk=room_code)
+            if room.available_hours>0:
+                room.available_hours -= 1
+                room.save()
+        return redirect("home")
+        #print(room.room_code)
+
+    return render(request, "room/home.html")
+
+def cancel(request):
+    id=request.GET.get('id')
+    booking=Booking.objects.get(pk=id)
+    booking.delete()
+    room = get_object_or_404(Room, pk=booking.room_code)
+    if room.available_hours>0:
+        room.available_hours += 1
+        room.save()
+    return render(request,"room/home.html")

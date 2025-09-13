@@ -1,17 +1,40 @@
 {% extends 'users/layout.html' %}
 {% block body %}
 
-{% if message %}
-    <h1>{{ message }}.</h1>
-{% endif %}
+<div class="container mt-5" style="max-width: 700px;">
 
-<h1>Reservation room</h1>
-<ul>
-    {% for room in booking %}
-    <li>Room {{ room.room_code }}: Name {{ room.room_name }} Capacity {{ room.room_capacity }}</li>
-    {% empty %}
-    <li>No Room</li>
-    {% endfor %}
-</ul>
+  <!-- กล่องหัวข้อ Reservation Room -->
+  <div class="alert alert-info text-center">
+    <h2 class="mb-0">Reservation Room</h2>
+  </div>
+
+  {% if message %}
+    <div class="alert alert-warning text-center mb-4">
+      {{ message }}
+    </div>
+  {% endif %}
+
+  <!-- รายการห้องที่จองไว้ -->
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">Your Bookings</h5>
+      <ul class="list-group list-group-flush">
+        {% for room in booking %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>Room {{ room.room_code }}</strong><br>
+              Booker Name: {{ room.username }}<br>
+              Capacity: {{ room.pk }}
+            </div>
+            <a href="{% url 'cancel' %}?id={{ room.id }}" class="btn btn-outline-danger btn-sm">Cancel</a>
+          </li>
+        {% empty %}
+          <li class="list-group-item text-muted">No Room</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+</div>
 
 {% endblock %}

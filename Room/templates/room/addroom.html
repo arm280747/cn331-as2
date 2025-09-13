@@ -1,0 +1,77 @@
+{% extends "users/layout.html" %}
+{% block body %}
+
+<div class="container mt-5" style="max-width: 700px;">
+
+  <!-- กล่องหัวข้อ Register -->
+  <div class="alert alert-primary text-center">
+    <h2 class="mb-0">Register Room</h2>
+  </div>
+
+  {% if message %}
+    <div class="alert alert-danger text-center mb-4">
+      {{ message }}
+    </div>
+  {% endif %}
+
+  <!-- ฟอร์มบันทึกห้อง -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <form action="{% url 'saveroom' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group mb-3">
+
+          <label for="room_code">Room Code</label>
+          <input type="text" name="room_code" class="form-control" placeholder="Enter room code" required>
+        
+        </div>
+        <div class="form-group mb-3">
+
+          <label for="room_name">Room Name</label>
+          <input type="text" name="room_name" class="form-control" placeholder="Enter room name" required>
+        
+        </div>
+        <div class="form-group mb-3">
+
+          <label for="room_capacity">Room Capacity</label>
+          <input type="text" name="room_capacity" class="form-control" placeholder="Enter room capacity" required>
+        
+        </div>
+        <div class="form-group mb-3">
+
+          <label for="available_hours">available hours</label>
+          <input type="text" name="available_hours" class="form-control" placeholder="Enter available hours" required>
+        
+        </div>
+
+        <button type="submit" class="btn btn-success w-100">Save Room</button>
+      
+      </form>
+    </div>
+  </div>
+
+  <!-- รายการห้องทั้งหมด -->
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">All Rooms</h5>
+      <ul class="list-group list-group-flush">
+        {% for room in allroom %}
+          <li class="list-group-item">
+            <a href="{% url 'room' room.pk %}">
+
+              <strong>Room {{ room.room_code }}</strong>: {{ room.room_name }} <br>
+              Hours available: {{ room.available_hours }} |
+              State: {{ room.room_state }}
+            
+            </a>
+          </li>
+        {% empty %}
+          <li class="list-group-item text-muted">No Room</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
