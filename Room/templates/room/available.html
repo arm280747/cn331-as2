@@ -14,18 +14,20 @@
       <ul class="list-group list-group-flush">
         {% for room in allroom %}
           <li class="list-group-item">
-            <a href="{% url 'selectroom'  %}?id={{room.pk}}">
-
-              <strong>Room {{ room.room_code }}</strong>: {{ room.room_name }}<br>
-              Hours available: {{room.available_hours}} |
-              State: {{ room.room_state }}
-            
+            <a href="{% url 'selectroom' room.room_code %} ">
+              <strong>Room {{ room.room_code }}</strong>: {{ room.room_name }}<br>            
             </a>
+            <p>
+              Hours available: {{ room.available_hours }} |
+              Capacity : {{ room.room_capacity }} |
+              State: {% if room.is_availabe %} Open {% else %} Closed {% endif %}
+            </p>
           </li>
         {% empty %}
           <li class="list-group-item text-muted text-center">No Room</li>
         {% endfor %}
       </ul>
+      <a href="{% url 'home' %}" class="btn btn-success">Return Home</a>
     </div>
   </div>
 

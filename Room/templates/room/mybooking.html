@@ -22,12 +22,12 @@
         {% for room in booking %}
           <li class="list-group-item d-flex justify-content-between align-items-center">
             <div>
-              <strong>Room {{ room.room_code }}</strong><br>
+              <strong>Room {{ room.room.room_code }}</strong><br>
               Booker Name: {{ room.username }}<br>
-              Capacity: {{ room.pk }}<br>
+              Capacity: {{ room.room.room_capacity }}<br>
               Booking Time: {{room.date_booking}}
             </div>
-            <a href="{% url 'cancel' %}?id={{ room.id }}" class="btn btn-outline-danger btn-sm">Cancel</a>
+            <a href="{% url 'cancel' room.room.room_code %}" class="btn btn-outline-danger btn-sm">Cancel</a>
           </li>
         {% empty %}
           <li class="list-group-item text-muted">No Room</li>

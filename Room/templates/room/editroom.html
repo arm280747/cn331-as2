@@ -1,11 +1,11 @@
-{% extends "users/layout.html" %}
+{% extends 'users/layout.html' %}
 {% block body %}
 
 <div class="container mt-5" style="max-width: 700px;">
 
   <!-- กล่องหัวข้อ Register -->
   <div class="alert alert-primary text-center">
-    <h2 class="mb-0">Register Room</h2>
+    <h2 class="mb-0">Room Editor</h2>
   </div>
 
   {% if message %}
@@ -14,10 +14,10 @@
     </div>
   {% endif %}
 
-  <!-- ฟอร์มบันทึกห้อง -->
+  <!-- ฟอร์มแก้ไขห้อง -->
   <div class="card shadow-sm mb-4">
     <div class="card-body">
-      <form action="{% url 'saveroom' %}" method="post">
+      <form action="{% url 'editroom' room.room_code %}" method="post">
         {% csrf_token %}
         <div class="form-group mb-3">
 
@@ -54,32 +54,10 @@
 
         </div>
 
-        <button type="submit" class="btn btn-success w-100 mb-2">Save Room</button><br>
+        <button type="submit" class="btn btn-success w-100">Save Room</button>
+      
       </form>
     </div>
   </div>
 
-  <!-- รายการห้องทั้งหมด -->
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <h5 class="card-title">All Rooms</h5>
-        <div class="d-flex overflow-auto gap-2 p-2">
-          <select name="room" onchange="location = this.value;">
-            {% for room in roomlist %}
-               <option value="{% url 'selectroom' room.room_code %}">
-                Room {{ room.room_code }}: {{ room.room_name }} | 
-                Hours available: {{ room.available_hours }} |
-                Capacity : {{ room.room_capacity }} |
-                State: {% if room.is_availabe %} Open {% else %} Closed {% endif %}
-               </option>
-            {% empty %}
-              <option disabled>No room</option>
-            {% endfor %}
-          </select>
-        </div>
-    </div>
-  </div>
-
-</div>
-
-{% endblock %}
+  {% endblock %}

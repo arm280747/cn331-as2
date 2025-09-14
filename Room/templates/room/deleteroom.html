@@ -1,0 +1,40 @@
+{% extends "users/layout.html" %}
+{% block body %}
+
+<div class="container mt-5" style="max-width: 700px;">
+
+  <!-- กล่องหัวข้อ Register -->
+  <div class="alert alert-primary text-center">
+    <h2 class="mb-0">Delete Room</h2>
+  </div>
+
+  <!-- ฟอร์มลบห้อง -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <form action="{% url 'deleteroom' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group mb-3">
+
+            <label for="room_code">Room Code</label>
+            <select name="room_code">
+
+            {% for room in roomlist %}
+                <option value="{{room.room_code}}">
+                    Room {{ room.room_code }}: {{ room.room_name }} | 
+                    Hours available: {{ room.available_hours }} |
+                    Capacity : {{ room.room_capacity }} |
+                    State: {% if room.is_availabe %} Open {% else %} Closed {% endif %}
+                </option>
+            {% endfor %}
+
+            </select>
+
+        </div>
+
+        <button type="submit" class="btn btn-success w-100">Delete Room</button>
+      
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

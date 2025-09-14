@@ -10,14 +10,23 @@
     </div>
   {% else %}
     <div class="alert alert-success text-center">
-      <h4>Welcome, {{ request.user.first_name }}</h4>
+      {% if request.user.is_superuser %}
+        <h4>Welcome, Admin {{ request.user.username }}</h4>
+      {% else %}
+        <h4>Welcome, User {{ request.user.first_name }}</h4>
+      {% endif %}
     </div>
   {% endif %}
 
   <!-- กล่องข้อมูลผู้ใช้ -->
   <div class="card mb-4 shadow-sm">
     <div class="card-body">
-      <h5 class="card-title">User Information</h5>
+      {% if request.user.is_superuser %}
+        <h5 class="card-title">Admin Information</h5>
+      {% else %}
+        <h5 class="card-title">User Information</h5>
+      {% endif %}
+
       <ul class="list-group list-group-flush">
 
         <li class="list-group-item"><strong>Username:</strong> {{ request.user.username }}</li>
@@ -34,8 +43,16 @@
       <div class="list-group">
 
         <a href="{% url 'available' %}" class="list-group-item list-group-item-action">📋 See all available rooms</a>
-        <a href="{% url 'mybooking' %}" class="list-group-item list-group-item-action">📅 See your bookings</a>
-        <a href="{% url 'addroom' %}" class="list-group-item list-group-item-action">➕ Add a new room</a>
+        
+        {% if not request.user.is_superuser %}
+          <a href="{% url 'mybooking' %}" class="list-group-item list-group-item-action">📅 See your bookings</a>
+        {% endif %}
+
+        {% if request.user.is_superuser %}
+          <a href="{% url 'addroom' %}" class="list-group-item list-group-item-action">➕ Add a new room</a>
+          <a href="{% url 'deletepage' %}" class="list-group-item list-group-item-action">❌ Delete room</a>
+        {% endif %}
+
         <a href="{% url 'Logout' %}" class="list-group-item list-group-item-action text-danger">🚪 Log Out</a>
       
       </div>
