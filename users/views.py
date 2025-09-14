@@ -19,14 +19,11 @@ def login_views(request):
 
         if user is not None:
             login(request, user)
+            # admin:index เป็น url ที่ Django กำหนดไว้ให้เป็นหน้า admin page
+            # return redirect(reverse("admin:index"))
 
-            if user.is_superuser:
-                # admin:index เป็น url ที่ Django กำหนดไว้ให้เป็นหน้า admin page
-                return redirect(reverse("admin:index"))
-            else:
-                return redirect("home")
-                #return render(request, "room/home.html")
-
+            return redirect("home") #return render(request, "room/home.html")
+    
         else:
             return render(
                 request, "users/login.html", {"message": "Invalid credentials."}
@@ -46,7 +43,7 @@ def register_views(request):
         password = request.POST["Password"]
         first_name = request.POST["first_name"]
         email = request.POST["email"]
-        password_again = request.POST["Password again"]
+        password_again = request.POST["confirm_password"]
 
         if password != password_again:
             return render(
