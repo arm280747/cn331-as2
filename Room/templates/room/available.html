@@ -8,24 +8,48 @@
     <h2 class="mb-0">Room List</h2>
   </div>
 
-  <!-- รายการห้อง -->
-  <div class="card shadow-sm">
+  <!-- ✅ ห้องที่สามารถจองได้ -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-success text-white">Available Rooms</div>
     <div class="card-body">
       <ul class="list-group list-group-flush">
         {% for room in allroom %}
-          <li class="list-group-item">
-            <a href="{% url 'selectroom'  %}?id={{room.pk}}">
-
-              <strong>Room {{ room.room_code }}</strong>: {{ room.room_name }}<br>
-              Hours available: {{room.available_hours}} |
-              State: {{ room.room_state }}
-            
-            </a>
-          </li>
-        {% empty %}
-          <li class="list-group-item text-muted text-center">No Room</li>
+          {% if room.is_available and room.available_hours != 0 %}
+            <li class="list-group-item">
+              <a href="{% url 'selectroom' room.room_code %}">
+                <strong>Room {{ room.room_code }}</strong>: {{ room.room_name }}
+              </a>
+              <p>
+                Hours available: {{ room.available_hours }} |
+                Capacity: {{ room.room_capacity }} |
+                State: Open
+              </p>
+            </li>
+          {% endif %}
         {% endfor %}
       </ul>
+    </div>
+  </div>
+
+  <!-- ❌ ห้องที่ไม่สามารถจองได้ -->
+  <div class="card shadow-sm">
+    <div class="card-header bg-danger text-white">Unavailable Rooms</div>
+    <div class="card-body">
+      <ul class="list-group list-group-flush">
+        {% for room in allroom %}
+          {% if not room.is_available or room.available_hours == 0 %}
+            <li class="list-group-item text-muted">
+              <strong>Room {{ room.room_code }}</strong>: {{ room.room_name }}
+              <p>
+                Hours available: {{ room.available_hours }} |
+                Capacity: {{ room.room_capacity }} |
+                State: Closed
+              </p>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+      <a href="{% url 'home' %}" class="btn btn-success mt-3">Return Home</a>
     </div>
   </div>
 

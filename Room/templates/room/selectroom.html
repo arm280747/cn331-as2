@@ -11,17 +11,26 @@
   <!-- รายละเอียดห้อง -->
   <div class="card shadow-sm mb-4">
     <div class="card-body">
-      <h4 class="card-title">Room {{ room.room_code }} - {{ room.room_name }}</h4>
+      <h4 class="card-title">Room {{ room_code }}: {{ room_name }}</h4>
       <p class="card-text">
-        <strong>Capacity:</strong> {{ room.room_capacity }}<br>
-        <strong>Available Hours:</strong> {{ room.available_hours }}
+        <strong>Capacity:</strong> {{ room_capacity }}<br>
+        <strong>Available Hours:</strong> {{ available_hours }}<br>
+        <strong>Room State:</strong> {% if is_availabe %} Open {% else %} Closed {% endif %}
       </p>
 
       <!-- ปุ่ม Booking -->
       <form action="{% url 'booking' %}" method="POST">
         {% csrf_token %}
-        <input type="hidden" name="room_code" value="{{ room.room_code }}" />
-        <button type="submit" class="btn btn-success">Book This Room</button>
+
+        {% if request.user.is_superuser %}
+          <a href="{% url 'editroom' room_code %}" class="btn btn-success">Edit Room</a>
+        {% endif %}
+
+        {% if not request.user.is_superuser %}
+          <input type="hidden" name="room_code" value= {{room_code}} />
+          <button type="submit" class="btn btn-success">Book This Room</button>
+        {% endif %}
+
         <a href="{% url 'available' %}" class="btn btn-outline-secondary ms-2">Back to Room List</a>
       </form>
     </div>
