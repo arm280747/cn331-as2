@@ -70,7 +70,7 @@
                 Room {{ room.room_code }}: {{ room.room_name }} | 
                 Hours available: {{ room.available_hours }} |
                 Capacity : {{ room.room_capacity }} |
-                State: {% if room.is_availabe %} Open {% else %} Closed {% endif %}
+                State: {% if room.is_available %} Open {% else %} Closed {% endif %}
                </option>
             {% empty %}
               <option disabled>No room</option>

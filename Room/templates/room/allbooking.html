@@ -1,0 +1,35 @@
+{% extends 'users/layout.html' %}
+{% block body %}
+
+<div class="container mt-5" style="max-width: 700px;">
+
+  <!-- กล่องหัวข้อ -->
+  <div class="alert alert-info text-center">
+    <h2 class="mb-0">Booking List</h2>
+  </div>
+
+  {% regroup allbooking by room as room_groups %}
+  <!-- ดู user -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-success text-white">Booking</div>
+    <div class="card-body">
+      <ul class="list-group list-group-flush">
+        {% for booking in room_groups %}
+            <li class="list-group-item">
+              <!--.grouper คือ ค้าที่ใช้เป็น group ในที่นี้ก็คือ Field room-->
+              <a href="{% url 'selectroom' booking.grouper.room_code %}">
+                <strong>Room {{ booking.grouper.room_code }}</strong>: {{ booking.grouper.room_name }}
+              </a>
+              <!--.list คือ list ของรายการ booking ที่อยู่ใน group-->
+              {% for booking in booking.list%}
+                <p>Username: {{ booking.username }}</p>
+              {% endfor %}    
+            </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

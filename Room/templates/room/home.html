@@ -51,6 +51,7 @@
         {% if request.user.is_superuser %}
           <a href="{% url 'addroom' %}" class="list-group-item list-group-item-action">➕ Add a new room</a>
           <a href="{% url 'deletepage' %}" class="list-group-item list-group-item-action">❌ Delete room</a>
+          <a href="{% url 'allbooking' %}" class="list-group-item list-group-item-action">🏠 See All Booking</a>
     
         {% endif %}
 
