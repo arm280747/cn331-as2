@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
+from collections import defaultdict
 
 from .models import Room, Booking
 
@@ -51,7 +52,7 @@ def saveroom(request):
             is_available=is_available
         )
         room.save()
-        return redirect("addroom")
+        return redirect("home")
         #print(room.room_code)
 
     return render(request, "room/addroom.html")
@@ -131,4 +132,9 @@ def cancel(request):
         room.available_hours += 1
         room.save()
     return render(request,"room/home.html")
+
+def allbooking(request):
+    all_booking = Booking.objects.all()
+
+    return render(request, "room/allbooking.html", {"allbooking": all_booking})
 

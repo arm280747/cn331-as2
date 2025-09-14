@@ -14,5 +14,5 @@ urlpatterns = [
     path("delete-room-page/", views.deletepage, name="deletepage"),
     path("deleteroom/", views.deleteroom, name="deleteroom"),
     path("editroom/<int:room_code>/", views.editroom, name="editroom"),
-
+    path("see-all-booking", views.allbooking, name="allbooking"),
 ]
