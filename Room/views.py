@@ -68,6 +68,10 @@ def deleteroom(request):
         return redirect("deletepage")
     return redirect("deletepage")
 
+def deletepage(request):
+    room_list=Room.objects.all()
+    return render(request, "room/deleteroom.html", {"roomlist": room_list})
+
 def editroom(request, room_code):
     room = get_object_or_404(Room, room_code=room_code)
     if request.method == "POST":
@@ -103,16 +107,17 @@ def booking(request):
         check_booking = Booking.objects.filter(username = request.user.username,room__room_code=room_code)
         if not check_booking.exists():
             room = Room.objects.get(room_code=int(room_code))
-            booking = Booking.objects.create(
-                room=room,
-                username=request.user.username
-            )   
-            #booking.save()
-            room = get_object_or_404(Room, room_code=room_code)
-            if room.available_hours>0:
-                room.available_hours -= 1
-                room.save()
-        return redirect("home")
+            if room.is_available and room.available_hours != 0:
+                booking = Booking.objects.create(
+                    room=room,
+                    username=request.user.username
+                )   
+                #booking.save()
+                room = get_object_or_404(Room, room_code=room_code)
+                if room.available_hours>0:
+                    room.available_hours -= 1
+                    room.save()
+            return redirect("home")
         #print(room.room_code)
 
     return render(request, "room/home.html")
@@ -121,8 +126,9 @@ def cancel(request):
     id=request.GET.get('id')
     booking=Booking.objects.get(pk=id)
     booking.delete()
-    room = get_object_or_404(Room, pk=booking.room_code)
-    if room.available_hours>0:
+    room = get_object_or_404(Room, pk=booking.room_id)
+    if room.available_hours<24:
         room.available_hours += 1
         room.save()
     return render(request,"room/home.html")
+

@@ -27,12 +27,13 @@
               Capacity: {{ room.room.room_capacity }}<br>
               Booking Time: {{room.date_booking}}
             </div>
-            <a href="{% url 'cancel' room.room.room_code %}" class="btn btn-outline-danger btn-sm">Cancel</a>
+            <a href="{% url 'cancel' %}?id={{ room.id }}" class="btn btn-outline-danger btn-sm">Cancel</a>
           </li>
         {% empty %}
           <li class="list-group-item text-muted">No Room</li>
         {% endfor %}
       </ul>
+      <a href="{% url 'home' %}" class="btn btn-success mt-3">Return Home</a>
     </div>
   </div>
 
